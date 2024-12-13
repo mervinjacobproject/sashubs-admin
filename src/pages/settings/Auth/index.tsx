@@ -18,13 +18,11 @@ import ApiClient from 'src/apiClient/apiClient/apiConfig'
 import { toast } from 'react-hot-toast'
 import { GridExceljsProcessInput } from '@mui/x-data-grid-premium'
 import CustomModal from 'src/pages/components/ReusableComponents/Modal/modal'
-import AuthHeader from 'src/pages/apps/invoice/list/AuthHeader'
+// import AuthHeader from 'src/pages/apps/invoice/list/AuthHeader'
 
 import Head from 'next/head'
 import AppSink from 'src/commonExports/AppSink'
 import EditRole from './editRole'
-
-
 
 const backColor = () => {
   const selectedMode = localStorage.getItem('selectedMode')
@@ -54,7 +52,6 @@ const CustomCloseButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
   }
 }))
 
-
 const defaultColumns: GridColDef[] = [
   {
     field: 'Sl.no',
@@ -71,9 +68,11 @@ const defaultColumns: GridColDef[] = [
     flex: 0.3,
     minWidth: 320,
     headerName: 'Title',
-    renderCell: ({ row }: any) => <Typography sx={{ color: 'text.secondary' }}>
-      {row.RoleName?.charAt(0).toUpperCase() + row.RoleName?.slice(1)}
-    </Typography>
+    renderCell: ({ row }: any) => (
+      <Typography sx={{ color: 'text.secondary' }}>
+        {row.RoleName?.charAt(0).toUpperCase() + row.RoleName?.slice(1)}
+      </Typography>
+    )
   },
   {
     field: 'status',
@@ -121,7 +120,6 @@ const AuthTable = () => {
   const [editMode, setEditMode] = useState(false)
 
   const deletItem = (id: string) => {
-
     handleModalOpenDelete()
     setSelectedRowId(id)
   }
@@ -138,7 +136,7 @@ const AuthTable = () => {
     const headers = {
       'x-api-key': 'da2-jowogob3crfi3fnfp4artz6syq',
       'Content-Type': 'application/json'
-    };
+    }
 
     ApiClient.post(`${AppSink}`, { query }, { headers })
       .then((res: any) => {
@@ -177,13 +175,11 @@ const AuthTable = () => {
     fetchData()
   }, [])
 
-
   const handleEmail = (e: any) => {
     setToEmail(e.target.value)
   }
 
   function fetchData() {
-
     const query = `query MyQuery {
       listUserRoles5AABS {
         totalCount
@@ -198,7 +194,7 @@ const AuthTable = () => {
     const headers = {
       'x-api-key': 'da2-jowogob3crfi3fnfp4artz6syq',
       'Content-Type': 'application/json'
-    };
+    }
     ApiClient.post(`${AppSink}`, { query }, { headers })
       .then(res => {
         setChargeList(res.data.data.listUserRoles5AABS.items)
@@ -213,15 +209,15 @@ const AuthTable = () => {
 
   const handleCompletedBulkDelete = async () => {
     try {
-      const idsToDelete = selectedRows.join(',');
-      const res = await ApiClient.delete(`/api.php?moduletype=userroles&apitype=delete&id=${idsToDelete}`);
-      setSelectedRows([]);
-      fetchData();
-      toast.success(res.data[0]?.status);
+      const idsToDelete = selectedRows.join(',')
+      const res = await ApiClient.delete(`/api.php?moduletype=userroles&apitype=delete&id=${idsToDelete}`)
+      setSelectedRows([])
+      fetchData()
+      toast.success(res.data[0]?.status)
     } catch (error) {
-      toast.error('Error during bulk delete');
+      toast.error('Error during bulk delete')
     }
-  };
+  }
 
   const handleSendConfirm = async () => {
     const columns = [
@@ -270,7 +266,9 @@ const AuthTable = () => {
         
         <td style="text-align: center;">${row.description}</td>
         <td style="text-align: center;">${row.charge}</td>
-        <td  style="text-align: center;" class="${statusClass}">${row.status == 'Active' ? 'Active' : 'InActive'}</td></tr>`
+        <td  style="text-align: center;" class="${statusClass}">${
+          row.status == 'Active' ? 'Active' : 'InActive'
+        }</td></tr>`
       })
       .join('')
     const printableData = `
@@ -373,7 +371,6 @@ const AuthTable = () => {
   }
 
   const handleEdit = (id: string) => {
-
     const selectedRow = chargeList.find((row: any) => row.ID === id)
     if (selectedRow) {
       setSelectedRowData(selectedRow)
@@ -399,11 +396,7 @@ const AuthTable = () => {
       renderCell: (row: any) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Tooltip title='Edit'>
-            <IconButton
-              size='small'
-              sx={{ color: 'text.secondary' }}
-              onClick={() => handleEdit(row.id)}
-            >
+            <IconButton size='small' sx={{ color: 'text.secondary' }} onClick={() => handleEdit(row.id)}>
               <Icon icon='tabler:edit' fontSize={20} />
             </IconButton>
           </Tooltip>
@@ -480,7 +473,7 @@ const AuthTable = () => {
           <Grid item xs={12}></Grid>
           <Grid item xs={12}>
             <Card>
-              <AuthHeader
+              {/* <AuthHeader
                 handleActiveButton={handleActiveButton}
                 handleInActiveButton={handleInActiveButton}
                 handleAllButton={handleAllButton}
@@ -498,7 +491,7 @@ const AuthTable = () => {
                 value={value}
                 selectedRows={selectedRows}
                 handleFilter={handleFilter}
-              />
+              /> */}
               <DataGrid
                 autoHeight
                 pagination
@@ -514,7 +507,6 @@ const AuthTable = () => {
                 onPaginationModelChange={setPaginationModel}
                 onRowSelectionModelChange={rows => setSelectedRows(rows)}
               />
-
             </Card>
           </Grid>
         </Grid>

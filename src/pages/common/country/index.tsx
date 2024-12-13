@@ -12,7 +12,7 @@ import { toast } from 'react-hot-toast'
 import 'jspdf-autotable'
 import Button from '@mui/material/Button'
 import CustomModal from 'src/pages/components/ReusableComponents/Modal/modal'
-import CountryHeader from 'src/pages/apps/invoice/list/countryHeader'
+// import CountryHeader from 'src/pages/apps/invoice/list/countryHeader'
 import Head from 'next/head'
 import PrintUrl from 'src/commonExports/printUrl'
 import { styled } from '@mui/material/styles'
@@ -60,22 +60,22 @@ const defaultColumns: GridColDef[] = [
     flex: 0.3,
     field: 'CountryName',
     headerName: 'Country Name',
-    renderCell: ({ row }: any) => 
-    <Tooltip title={row.CountryName}>
-
-      <Typography sx={{ color: 'text.secondary' }}>{row.CountryName}</Typography>
-    </Tooltip>
+    renderCell: ({ row }: any) => (
+      <Tooltip title={row.CountryName}>
+        <Typography sx={{ color: 'text.secondary' }}>{row.CountryName}</Typography>
+      </Tooltip>
+    )
   },
   {
     flex: 0.3,
     field: 'CountryCode',
     headerName: 'PhoneCode',
     sortable: false,
-    renderCell: ({ row }: any) => 
+    renderCell: ({ row }: any) => (
       <Tooltip title={row.CountryCode}>
-
         <Typography sx={{ color: 'text.secondary' }}>{row.CountryCode}</Typography>
       </Tooltip>
+    )
   },
   {
     field: 'Status',
@@ -89,8 +89,7 @@ const defaultColumns: GridColDef[] = [
           borderRadius: '5px',
           width: '8px',
           cursor: 'initial',
-          backgroundColor:
-            row.Status == 1 ? '#dff7e9 !important' : row.Status == 0 ? '#f2f2f3 !important' : '',
+          backgroundColor: row.Status == 1 ? '#dff7e9 !important' : row.Status == 0 ? '#f2f2f3 !important' : '',
           color: row.Status == 1 ? '#28c76f !important' : row.Status == 0 ? '#a8aaae !important' : '',
           fontWeight: '400',
           fontSize: row.Status == 0 ? '0.81em' : '0.81em'
@@ -99,7 +98,7 @@ const defaultColumns: GridColDef[] = [
         {row.Status == 1 ? 'Active' : row.Status == 0 ? 'Inactive' : ''}
       </Button>
     )
-  },
+  }
 ]
 
 const Countrylist = () => {
@@ -122,7 +121,7 @@ const Countrylist = () => {
   const handleModalOpenDelete = () => setModalOpenDelete(true)
   const handleModalCloseDelete = () => setModalOpenDelete(false)
   const [designation, setDesignation] = useState([])
-  const rowCount = designation?.length;
+  const rowCount = designation?.length
   const calculateHeight = (rowCount: any, pageSize: any) => {
     const rowHeight = 59 // Default row height in Material-UI DataGrid
     const headerHeight = 59 // Default header height in Material-UI DataGrid
@@ -151,18 +150,17 @@ const Countrylist = () => {
   }
 
   const handleDeleteConfirm = () => {
-
     // const apiEndpoint =
     ApiClient.post(`/deletecountry?id=${selectedRowId}`) // Corrected line
-    .then((res: any) => {
-      toast.success('Deleted successfully');
-      fetchData();
-      setModalOpenDelete(false);
-    })
-    .catch((err: any) => {
-    toast.error('Error deleting designation');
-  })
-};
+      .then((res: any) => {
+        toast.success('Deleted successfully')
+        fetchData()
+        setModalOpenDelete(false)
+      })
+      .catch((err: any) => {
+        toast.error('Error deleting designation')
+      })
+  }
 
   const handleCancelDelete = () => {
     setModalOpenDelete(false)
@@ -170,28 +168,25 @@ const Countrylist = () => {
 
   const fetchData = async () => {
     try {
-     
-      const res = await ApiClient.post(`/getcountry`);
-      const totalRowCount = res.data.data;
-      setTotalCount(totalRowCount);
-  
+      const res = await ApiClient.post(`/getcountry`)
+      const totalRowCount = res.data.data
+      setTotalCount(totalRowCount)
+
       const dataWithSerialNumber = totalRowCount.map((row: any, index: number) => ({
         ...row,
-        'S.No': index + 1,
-      }));
-  
-      setDesignation(dataWithSerialNumber);
+        'S.No': index + 1
+      }))
+
+      setDesignation(dataWithSerialNumber)
     } catch (err) {
-      toast.error('Error fetching data');
+      toast.error('Error fetching data')
     }
-  };
-  
-  
+  }
 
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paginationModel, ])
+  }, [paginationModel])
 
   const printData = () => {
     const imageSource = '/images/icons/project-icons/sev 1.png'
@@ -208,7 +203,8 @@ const Countrylist = () => {
       </div>
     `
 
-    const tableHeader = '<tr style="text-align: center;"><th>S.No</th><th>CountryName</th><th>SortName</th><th>PhoneCode</th><th>Status</th></tr>'
+    const tableHeader =
+      '<tr style="text-align: center;"><th>S.No</th><th>CountryName</th><th>SortName</th><th>PhoneCode</th><th>Status</th></tr>'
 
     const tableRows = rideData
       .map((row: any, index: any) => {
@@ -217,7 +213,9 @@ const Countrylist = () => {
           <td style="text-align: center; border-bottom: 1px solid #ddd;">${row.Name}</td>
           <td style="text-align: center; border-bottom: 1px solid #ddd;">${row.SortName}</td>
           <td style="text-align: center; border-bottom: 1px solid #ddd;">${row.PhoneCode}</td>
-          <td style="text-align: center; border-bottom: 1px solid #ddd;">${row.Status === true ? 'ACTIVE' : row.Status === false ? 'INACTIVE' : ''}</td>
+          <td style="text-align: center; border-bottom: 1px solid #ddd;">${
+            row.Status === true ? 'ACTIVE' : row.Status === false ? 'INACTIVE' : ''
+          }</td>
         </tr>`
       })
       .join('')
@@ -285,7 +283,7 @@ const Countrylist = () => {
       printWindow.document.close()
       printWindow.print()
     } else {
-     // console.error('Unable to open a new window. Please check your popup blocker settings.')
+      // console.error('Unable to open a new window. Please check your popup blocker settings.')
     }
   }
 
@@ -347,37 +345,37 @@ const Countrylist = () => {
     setEditMode(false)
     setSelectedRowData(null)
   }
-  const applyFilters = async(activeStatus: any, phoneCode: any,countrySortName: any) => {
+  const applyFilters = async (activeStatus: any, phoneCode: any, countrySortName: any) => {
     try {
-      let res: any;
-      const queryParams: string[] = [];
+      let res: any
+      const queryParams: string[] = []
       if (countrySortName) {
-        queryParams.push(`CountryName=${countrySortName}`);
+        queryParams.push(`CountryName=${countrySortName}`)
       }
       if (activeStatus && activeStatus !== 'all') {
-        const status = activeStatus === 'active' ? 1 : 0;
-        queryParams.push(`Status=${status}`);
+        const status = activeStatus === 'active' ? 1 : 0
+        queryParams.push(`Status=${status}`)
       }
       if (phoneCode) {
-        queryParams.push(`CountryCode=${phoneCode}`);
+        queryParams.push(`CountryCode=${phoneCode}`)
       }
       if (queryParams.length) {
-        const queryString = `?${queryParams.join('&')}`;
-        res = await ApiClient.post(`/getcountry${queryString}`);
+        const queryString = `?${queryParams.join('&')}`
+        res = await ApiClient.post(`/getcountry${queryString}`)
       }
-  
+
       // Process the response data
-      const totalRowCount = res.data.data;
-      setTotalCount(totalRowCount);
-  
+      const totalRowCount = res.data.data
+      setTotalCount(totalRowCount)
+
       const dataWithSerialNumber = totalRowCount.map((row: any, index: number) => ({
         ...row,
-        'S.No': index + 1,
-      }));
-  
-      setDesignation(dataWithSerialNumber);
+        'S.No': index + 1
+      }))
+
+      setDesignation(dataWithSerialNumber)
     } catch (err) {
-      toast.error('Error fetching data');
+      toast.error('Error fetching data')
     }
   }
   function resetFilters() {
@@ -398,7 +396,7 @@ const Countrylist = () => {
           <Grid item xs={12}></Grid>
           <Grid item xs={12}>
             <Card>
-              <CountryHeader
+              {/* <CountryHeader
                 rideData={designation}
                 allCountry={allCountry}
                 printData={printData}
@@ -417,7 +415,7 @@ const Countrylist = () => {
                 resetFilters={resetFilters}
                 applyFilters={applyFilters}
 
-              />
+              /> */}
               <DataGrid
                 autoHeight
                 pagination
@@ -429,7 +427,7 @@ const Countrylist = () => {
                 disableRowSelectionOnClick
                 pageSizeOptions={[10, 25, 50, 100]}
                 paginationModel={paginationModel}
-                      onPaginationModelChange={setPaginationModel}
+                onPaginationModelChange={setPaginationModel}
                 onRowSelectionModelChange={rows => setSelectedRows(rows)}
               />
             </Card>
@@ -513,4 +511,3 @@ const Countrylist = () => {
   )
 }
 export default Countrylist
-

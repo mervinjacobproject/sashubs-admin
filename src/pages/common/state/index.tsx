@@ -1,4 +1,4 @@
- import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
 import Tooltip from '@mui/material/Tooltip'
@@ -13,7 +13,7 @@ import Button from '@mui/material/Button'
 import { toast } from 'react-hot-toast'
 import { Typography } from '@mui/material'
 import 'jspdf-autotable'
-import StateHeader from 'src/pages/apps/invoice/list/stateHeader'
+// import StateHeader from 'src/pages/apps/invoice/list/stateHeader'
 import StateEditForm from './editStateForm'
 import { styled } from '@mui/material/styles'
 import { IconButtonProps } from '@mui/material/IconButton'
@@ -94,14 +94,14 @@ const Statelist = () => {
 
   const handleDeleteConfirm = () => {
     ApiClient.post(`/deletestate?Id=${selectedRowId}`) // Corrected line
-    .then((res: any) => {
-      toast.success('Deleted successfully');
-      fetchData();
-      setModalOpenDelete(false);
-    })
-    .catch((err: any) => {
-    toast.error('Error deleting designation');
-  })
+      .then((res: any) => {
+        toast.success('Deleted successfully')
+        fetchData()
+        setModalOpenDelete(false)
+      })
+      .catch((err: any) => {
+        toast.error('Error deleting designation')
+      })
   }
   const handleCancelDelete = () => {
     setModalOpenDelete(false)
@@ -111,24 +111,24 @@ const Statelist = () => {
     setEditMode(false)
     setSelectedRowData(null)
   }
-  const applyFilters = async (activeStatus: any,stateName: any, allCountryName: any, ) => {
+  const applyFilters = async (activeStatus: any, stateName: any, allCountryName: any) => {
     try {
-      let res: any;
-      const queryParams: string[] = [];
+      let res: any
+      const queryParams: string[] = []
       if (stateName) {
-        queryParams.push(`StateName=${stateName}`);
+        queryParams.push(`StateName=${stateName}`)
       }
       if (activeStatus && activeStatus !== 'all') {
-        const status = activeStatus === 'active' ? 1 : 0;
-        queryParams.push(`Status=${status}`);
+        const status = activeStatus === 'active' ? 1 : 0
+        queryParams.push(`Status=${status}`)
       }
       if (allCountryName) {
-        queryParams.push(`CountryId=${allCountryName}`);
+        queryParams.push(`CountryId=${allCountryName}`)
       }
       if (queryParams.length) {
-        const queryString = `?${queryParams.join('&')}`;
+        const queryString = `?${queryParams.join('&')}`
 
-        res = await ApiClient.post(`/getstates${queryString}`);
+        res = await ApiClient.post(`/getstates${queryString}`)
       }
       const totalRowCount = res.data.data
       setRowCount(totalRowCount)
@@ -143,16 +143,10 @@ const Statelist = () => {
     }
   }
 
-
-
-
-
-      function resetFilters() {
-setStateName(""),
-setActiveStatus("all"),
-setAllCountryName("")
-        fetchData()
-      }
+  function resetFilters() {
+    setStateName(''), setActiveStatus('all'), setAllCountryName('')
+    fetchData()
+  }
   // const fetchCountryName = async () => {
   //   try {
   //     const res = await ApiClient.post(`/getcountry`)
@@ -347,7 +341,7 @@ setAllCountryName("")
       printWindow.document.close()
       printWindow.print()
     } else {
-     // console.error('Unable to open a new window. Please check your popup blocker settings.')
+      // console.error('Unable to open a new window. Please check your popup blocker settings.')
     }
   }
 
@@ -386,22 +380,21 @@ setAllCountryName("")
       field: 'StateName',
       headerName: 'State Name',
       flex: 0.3,
-      renderCell: ({ row }: any) =>
+      renderCell: ({ row }: any) => (
         <Tooltip title={row.StateName}>
-
           <Typography sx={{ color: 'text.secondary' }}>{row.StateName}</Typography>
         </Tooltip>
+      )
     },
     {
       field: 'CountryName',
       headerName: 'Country Name',
       flex: 0.3,
-      renderCell: ({ row }: any) =>
+      renderCell: ({ row }: any) => (
         <Tooltip title={row.CountryName}>
-
           <Typography sx={{ color: 'text.secondary' }}>{row.CountryName}</Typography>
         </Tooltip>
-
+      )
     },
     {
       field: 'Status',
@@ -415,8 +408,7 @@ setAllCountryName("")
             borderRadius: '5px',
             width: '8px',
             cursor: 'initial',
-            backgroundColor:
-              row.Status == 1 ? '#dff7e9 !important' : row.Status == 0 ? '#f2f2f3 !important' : '',
+            backgroundColor: row.Status == 1 ? '#dff7e9 !important' : row.Status == 0 ? '#f2f2f3 !important' : '',
             color: row.Status == 1 ? '#28c76f !important' : row.Status == 0 ? '#a8aaae !important' : '',
             fontWeight: '400',
             fontSize: row.Status == 0 ? '0.81em' : '0.81em'
@@ -461,7 +453,7 @@ setAllCountryName("")
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <Card>
-              <StateHeader
+              {/* <StateHeader
                 stateValue={stateValue}
                 setAllState={setAllState}
                 setAllCountryName={setAllCountryName}
@@ -477,7 +469,7 @@ setAllCountryName("")
                 onFetchData={fetchData}
                 applyFilters={applyFilters}
                 resetFilters={resetFilters}
-              />
+              /> */}
               <DataGrid
                 autoHeight
                 pagination

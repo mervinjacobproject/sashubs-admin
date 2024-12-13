@@ -13,7 +13,7 @@ import Button from '@mui/material/Button'
 import { toast } from 'react-hot-toast'
 import { Typography } from '@mui/material'
 import 'jspdf-autotable'
-import SuburbHeader from 'src/pages/apps/invoice/list/surburpHeader'
+// import SuburbHeader from 'src/pages/apps/invoice/list/surburpHeader'
 import EditSuburbForm from './editForm'
 import { styled } from '@mui/material/styles'
 import { IconButtonProps } from '@mui/material/IconButton'
@@ -84,8 +84,7 @@ const Suburblist = () => {
   const [country, setCountry] = useState([])
   const [state, setState] = useState([])
 
-
-  const rowTotalCount = rideData?.length;
+  const rowTotalCount = rideData?.length
   // const [stateName, setStateName] = useState('all')
   const [activeStatus, setActiveStatus] = useState('all')
 
@@ -101,14 +100,14 @@ const Suburblist = () => {
 
   const handleDeleteConfirm = () => {
     ApiClient.post(`/deletecity?Id=${selectedRowId}`) // Corrected line
-    .then((res: any) => {
-      toast.success('Deleted successfully');
-      fetchData();
-      setModalOpenDelete(false);
-    })
-    .catch((err: any) => {
-    toast.error('Error deleting designation');
-  })
+      .then((res: any) => {
+        toast.success('Deleted successfully')
+        fetchData()
+        setModalOpenDelete(false)
+      })
+      .catch((err: any) => {
+        toast.error('Error deleting designation')
+      })
   }
 
   const handleCancelDelete = () => {
@@ -124,89 +123,87 @@ const Suburblist = () => {
     setSelectedRowData(null)
   }
 
-  const applyFilters = async (activeStatus: any ,   allCountryName: any, citySortName: any,allState: any,) => {
+  const applyFilters = async (activeStatus: any, allCountryName: any, citySortName: any, allState: any) => {
     try {
-      let res: any;
-      const queryParams: string[] = [];
+      let res: any
+      const queryParams: string[] = []
       if (allState) {
-        queryParams.push(`StateId=${allState}`);
+        queryParams.push(`StateId=${allState}`)
       }
       if (citySortName) {
-        queryParams.push(`CityName=${citySortName}`);
+        queryParams.push(`CityName=${citySortName}`)
       }
       if (allCountryName) {
-        queryParams.push(`CountryId=${allCountryName}`);
+        queryParams.push(`CountryId=${allCountryName}`)
       }
       if (activeStatus && activeStatus !== 'all') {
         // Only add Status if it's not 'all'
-        const status = activeStatus === 'active' ? 1 : 0;
-        queryParams.push(`Status=${status}`);
+        const status = activeStatus === 'active' ? 1 : 0
+        queryParams.push(`Status=${status}`)
       }
       if (queryParams.length) {
-        const queryString = `?${queryParams.join('&')}`;
-        res = await ApiClient.post(`/getcities${queryString}`);
+        const queryString = `?${queryParams.join('&')}`
+        res = await ApiClient.post(`/getcities${queryString}`)
       }
-          const totalRowCount = res.data.data
+      const totalRowCount = res.data.data
 
-          setTotalCount(totalRowCount)
-          const response = res.data.data
+      setTotalCount(totalRowCount)
+      const response = res.data.data
 
-          const dataWithSerialNumber = response.map((row: any, index: number) => ({
-            ...row,
-            'S.No': index + 1
-          }))
+      const dataWithSerialNumber = response.map((row: any, index: number) => ({
+        ...row,
+        'S.No': index + 1
+      }))
 
-          setRideData(dataWithSerialNumber)
-        } catch (err) {
-          toast.error('Error fetching data:')
-        }
-      }
+      setRideData(dataWithSerialNumber)
+    } catch (err) {
+      toast.error('Error fetching data:')
+    }
+  }
 
-      function resetFilters() {
-setCitySortName(""),
-setActiveStatus("all"),
-setAllCountryName("")
-        fetchData()
-      }
-//   const fetchData = async () => {
-//     try {
-//       //debugger
-//       let res: any;
-//       const queryParams: string[] = [];
-//       if (allState) {
-//         queryParams.push(`StateId=${allState}`);
-//       }
-//       if (citySortName) {
-//         queryParams.push(`CityName=${citySortName}`);
-//       }
-//       if (allCountryName) {
-//         queryParams.push(`CountryId=${allCountryName}`);
-//       }
-//       if (activeStatus && activeStatus !== 'all') {
-//         // Only add Status if it's not 'all'
-//         const status = activeStatus === 'active' ? 1 : 0;
-//         queryParams.push(`Status=${status}`);
-//       }
-//       if (queryParams.length) {
-//         const queryString = `?${queryParams.join('&')}`;
-//         https://api.apurvarewardz.com/getcities?CityName=N&StateId=24&CountryId=95&Status=1
-//         res = await ApiClient.post(`/getcities${queryString}`);
-//       } else {
-//  res = await ApiClient.post(`/getcities`)
-//       }
-//       const totalRowCount = res.data.data
-//       setRowCount(totalRowCount)
-//       setAllData(res.data.data)
-//       const response = res.data.data
-//       const dataWithSerialNumber = response.map((row: any, index: number) => ({
-//         ...row,
-//         'S.No': index + 1
-//       }))
-//       setRideData(dataWithSerialNumber)
-//     } catch (err) {
-//       //console.error('Error fetching data:', err)
-//     }
-//   }
+  function resetFilters() {
+    setCitySortName(''), setActiveStatus('all'), setAllCountryName('')
+    fetchData()
+  }
+  //   const fetchData = async () => {
+  //     try {
+  //       //debugger
+  //       let res: any;
+  //       const queryParams: string[] = [];
+  //       if (allState) {
+  //         queryParams.push(`StateId=${allState}`);
+  //       }
+  //       if (citySortName) {
+  //         queryParams.push(`CityName=${citySortName}`);
+  //       }
+  //       if (allCountryName) {
+  //         queryParams.push(`CountryId=${allCountryName}`);
+  //       }
+  //       if (activeStatus && activeStatus !== 'all') {
+  //         // Only add Status if it's not 'all'
+  //         const status = activeStatus === 'active' ? 1 : 0;
+  //         queryParams.push(`Status=${status}`);
+  //       }
+  //       if (queryParams.length) {
+  //         const queryString = `?${queryParams.join('&')}`;
+  //         https://api.apurvarewardz.com/getcities?CityName=N&StateId=24&CountryId=95&Status=1
+  //         res = await ApiClient.post(`/getcities${queryString}`);
+  //       } else {
+  //  res = await ApiClient.post(`/getcities`)
+  //       }
+  //       const totalRowCount = res.data.data
+  //       setRowCount(totalRowCount)
+  //       setAllData(res.data.data)
+  //       const response = res.data.data
+  //       const dataWithSerialNumber = response.map((row: any, index: number) => ({
+  //         ...row,
+  //         'S.No': index + 1
+  //       }))
+  //       setRideData(dataWithSerialNumber)
+  //     } catch (err) {
+  //       //console.error('Error fetching data:', err)
+  //     }
+  //   }
   const fetchData = async () => {
     try {
       const res = await ApiClient.post(`/getcities`)
@@ -230,9 +227,7 @@ setAllCountryName("")
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paginationModel, allCountryName, allState,citySortName, allState ])
-
-
+  }, [paginationModel, allCountryName, allState, citySortName, allState])
 
   const printData = () => {
     const imageSource = '/images/icons/project-icons/sev 1.png'
@@ -324,7 +319,7 @@ setAllCountryName("")
       printWindow.document.close()
       printWindow.print()
     } else {
-     // console.error('Unable to open a new window. Please check your popup blocker settings.')
+      // console.error('Unable to open a new window. Please check your popup blocker settings.')
     }
   }
 
@@ -356,40 +351,38 @@ setAllCountryName("")
       flex: 0.1,
       editable: false,
       filterable: false,
-      sortable:false,
+      sortable: false,
       renderCell: (params: any) => params.api.getAllRowIds().indexOf(params.id) + 1
     },
     {
       field: 'City',
       headerName: 'City Name',
       flex: 0.3,
-      renderCell: ({ row }: any) =>
+      renderCell: ({ row }: any) => (
         <Tooltip title={row.City}>
-
           <Typography sx={{ color: 'text.secondary' }}>{row.City}</Typography>
         </Tooltip>
+      )
     },
     {
       field: 'StateName',
       headerName: 'State Name',
       flex: 0.3,
-      renderCell: ({ row }: any) =>
+      renderCell: ({ row }: any) => (
         <Tooltip title={row.StateName}>
-
           <Typography sx={{ color: 'text.secondary' }}>{row.StateName}</Typography>
         </Tooltip>
-
+      )
     },
     {
       field: 'CountryName',
       headerName: 'Country Name',
       flex: 0.3,
-      renderCell: ({ row }: any) =>
+      renderCell: ({ row }: any) => (
         <Tooltip title={row.CountryName}>
-
           <Typography sx={{ color: 'text.secondary' }}>{row.CountryName}</Typography>
         </Tooltip>
-
+      )
     },
     {
       field: 'Status',
@@ -436,8 +429,6 @@ setAllCountryName("")
     }
   ]
 
-
-
   return (
     <>
       <DatePickerWrapper>
@@ -449,7 +440,7 @@ setAllCountryName("")
           <Grid item xs={12}></Grid>
           <Grid item xs={12}>
             <Card>
-              <SuburbHeader
+              {/* <SuburbHeader
                 stateValue={stateValue}
                 setAllCountryName={setAllCountryName}
                 setAllState={setAllState}
@@ -467,11 +458,7 @@ setAllCountryName("")
                 activeStatus={activeStatus}
                 applyFilters={applyFilters}
                 resetFilters={resetFilters}
-
-
-
-
-              />
+              /> */}
               <DataGrid
                 autoHeight
                 pagination
