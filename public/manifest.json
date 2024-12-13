@@ -1,0 +1,31 @@
+{
+  "name": "Apurva-Shopping",
+  "short_name": "Apurva",
+  "description": "Apurva",
+  "theme_color": "#4743c9",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "any",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/images/apurvaa1.svg",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/screenshot-desktop.png",
+      "sizes": "1912x1012",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/images/Media.jfif",
+      "sizes": "1080x2400",
+      "type": "image/png"
+    }
+  ]
+}

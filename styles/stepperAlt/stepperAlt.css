@@ -1,0 +1,13 @@
+.empFirstName {
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
+    width :100%;
+    gap: 20px;
+}
+.empTextField{
+    width: 100%;
+}
+.customDatepicker{
+    width: 1300px;
+}

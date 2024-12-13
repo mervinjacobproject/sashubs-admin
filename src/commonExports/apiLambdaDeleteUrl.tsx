@@ -1,0 +1,4 @@
+
+const LambdaDeleteBaseUrl = process.env.NEXT_PUBLIC_JWT_Lambda_delete_BaseURL
+
+export default LambdaDeleteBaseUrl
