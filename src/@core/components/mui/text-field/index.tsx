@@ -5,7 +5,20 @@ import { forwardRef } from 'react'
 import { styled } from '@mui/material/styles'
 import TextField, { TextFieldProps } from '@mui/material/TextField'
 
-const TextFieldStyled = styled(TextField)<TextFieldProps & { width?: string  }>(({ theme, width, placeholder }) => ({
+const backColor = () => {
+  const selectedMode = localStorage.getItem('selectedMode')
+  if (selectedMode === 'dark') {
+    return '#F8F7FA5'
+  } else if (selectedMode === 'light') {
+    return '#ffff'
+  } else if (localStorage.getItem('systemMode') === 'dark') {
+    return 'inherit'
+  } else {
+    return '#fff'
+  }
+}
+
+const TextFieldStyled = styled(TextField)<TextFieldProps & { width?: string }>(({ theme, width, placeholder }) => ({
   alignItems: 'flex-start',
   '& .MuiInputLabel-root': {
     transform: 'none',
@@ -18,7 +31,10 @@ const TextFieldStyled = styled(TextField)<TextFieldProps & { width?: string  }>(
   '& .MuiInputBase-root': {
     borderRadius: 8,
     backgroundColor: 'transparent !important',
-    border: `1px solid rgba(${theme.palette.customColors.main}, 0.2)`,
+    // backgroundColor: backColor(),
+
+    // border: `1px solid rgba(${theme.palette.customColors.main}, 0.2)`,
+    border: `1px solid rgba(93, 90, 104, 0.5)`,
     transition: theme.transitions.create(['border-color', 'box-shadow'], {
       duration: theme.transitions.duration.shorter
     }),
@@ -30,7 +46,7 @@ const TextFieldStyled = styled(TextField)<TextFieldProps & { width?: string  }>(
     },
     '&.MuiInputBase-sizeSmall': {
       borderRadius: 6,
-      width: width || '100%',
+      width: width || '100%'
     },
     '&.Mui-error': {
       borderColor: theme.palette.error.main
@@ -79,8 +95,7 @@ const TextFieldStyled = styled(TextField)<TextFieldProps & { width?: string  }>(
     },
     '&:not(.MuiInputBase-readOnly):not([readonly])::placeholder': {
       transition: theme.transitions.create(['opacity', 'transform'], { duration: theme.transitions.duration.shorter }),
-      content: `"${placeholder || ''}"`,
-     
+      content: `"${placeholder || ''}"`
     },
 
     // ** For Autocomplete
@@ -158,9 +173,9 @@ const TextFieldStyled = styled(TextField)<TextFieldProps & { width?: string  }>(
   }
 }))
 
-const CustomTextField = forwardRef((props: TextFieldProps & { width?: string,defaultValue?: string }, ref) => {
+const CustomTextField = forwardRef((props: TextFieldProps & { width?: string; defaultValue?: string }, ref) => {
   // ** Props
-  const { size = 'small',defaultValue, InputLabelProps, ...rest } = props
+  const { size = 'small', defaultValue, InputLabelProps, ...rest } = props
 
   return (
     <TextFieldStyled
@@ -168,12 +183,11 @@ const CustomTextField = forwardRef((props: TextFieldProps & { width?: string,def
       inputRef={ref}
       {...rest}
       variant='filled'
-      InputLabelProps={{ ...InputLabelProps, shrink: true , placeholder: 'Your Placeholder'}}
+      InputLabelProps={{ ...InputLabelProps, shrink: true, placeholder: 'Your Placeholder' }}
       style={{ width: props.width }}
-      disabled={props.disabled}  
+      disabled={props.disabled}
+      // value={value}
 
-      // value={value} 
-      
       defaultValue={defaultValue}
     />
   )

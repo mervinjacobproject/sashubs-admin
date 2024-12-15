@@ -8,7 +8,7 @@ import { fetchData } from 'src/store/apps/user'
 import axios from 'axios'
 import { AppDispatch } from 'src/store'
 import { CardStatsType } from 'src/@fake-db/types'
-import CrmDashboard from 'src/pages/dashboards/crm'
+// import CrmDashboard from 'src/pages/dashboards/crm'
 import Head from 'next/head'
 
 const UserList = ({ apiData }: InferGetStaticPropsType<typeof getStaticProps>) => {
@@ -31,15 +31,13 @@ const UserList = ({ apiData }: InferGetStaticPropsType<typeof getStaticProps>) =
 
   return (
     <>
-      
-    <Grid container spacing={6.5}>
-      <Grid item xs={12}>
-        <CardStatsHorizontalWithDetails />
+      <Grid container spacing={6.5}>
+        <Grid item xs={12}>
+          <CardStatsHorizontalWithDetails />
+        </Grid>
+        {/* <CrmDashboard /> */}
       </Grid>
-      <CrmDashboard />
-    </Grid>
     </>
-
   )
 }
 

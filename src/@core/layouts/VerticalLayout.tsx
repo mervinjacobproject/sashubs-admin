@@ -98,7 +98,7 @@ const VerticalLayout = (props: LayoutProps) => {
                 mx: 'auto',
                 '@media (min-width:1200px)': { maxWidth: '100%' }
               }),
-              paddingTop: '0'
+              paddingTop: '10px'
             }}
           >
             {children}

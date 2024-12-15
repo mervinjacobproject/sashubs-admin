@@ -14,36 +14,39 @@ const StyledCompanyName = styled(Link)(({ theme }) => ({
   color: `${theme.palette.primary.main} !important`
 }))
 
-// const LinkStyled = styled(Link)(({ theme }) => ({
-//   textDecoration: 'none',
-//   color: `${theme.palette.text.secondary} !important`,
-//   '&:hover': {
-//     color: `${theme.palette.primary.main} !important`
-//   }
-// }))
+const LinkStyled = styled(Link)(({ theme }) => ({
+  textDecoration: 'none',
+  color: `${theme.palette.text.secondary} !important`,
+  '&:hover': {
+    color: `${theme.palette.primary.main} !important`
+  }
+}))
 
 const FooterContent = () => {
   // ** Var
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'))
 
   return (
-    <Box sx={{  display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      textAlign: 'center',
-      width: '100%',
-      py: 2,
-      backgroundColor: 'background.default', }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        width: '100%',
+        py: 2,
+        backgroundColor: 'background.default'
+      }}
+    >
       <Typography sx={{ mr: 2, display: 'flex', color: 'text.secondary' }}>
         {`© ${new Date().getFullYear()}, Made with `}
         {/* <Box component='span' sx={{ mx: 1, color: 'error.main' }}>
 
         </Box> */}
         {`by`}
-        <Typography sx={{ ml: 1 }} target='_blank' href='https://www.laabamone.com/' component={StyledCompanyName}>
-        All Rights Reserved ©
-     Laabam.
+        <Typography sx={{ ml: 1 }} target='_blank' href='#' component={StyledCompanyName}>
+          All Rights Reserved © Mervin.
         </Typography>
       </Typography>
       {hidden ? null : (

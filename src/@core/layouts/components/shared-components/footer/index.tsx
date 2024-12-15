@@ -63,7 +63,8 @@ const Footer = (props: Props) => {
           }),
           ...(footer === 'fixed' && {
             ...(contentWidth === 'boxed' &&
-              layout === 'vertical' && {
+              layout === 'vertical' &&
+              {
                 // '@media (min-width:1440px)': { maxWidth: theme => `calc(1440px - ${theme.spacing(6)} * 2)` }
               }),
             ...(layout === 'vertical' && {

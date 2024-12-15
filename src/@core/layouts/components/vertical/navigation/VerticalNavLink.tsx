@@ -45,9 +45,11 @@ const MenuNavLink = styled(ListItemButton)<
   '&.active': {
     '&, &:hover': {
       boxShadow: `0px 2px 6px ${hexToRGBA(theme.palette.primary.main, 0.48)}`,
-      background: `linear-gradient(72.47deg, ${theme.direction === 'ltr' ? theme.palette.primary.main : hexToRGBA(theme.palette.primary.main, 0.7)
-        } 22.16%, ${theme.direction === 'ltr' ? hexToRGBA(theme.palette.primary.main, 0.7) : theme.palette.primary.main
-        } 76.47%)`,
+      background: `linear-gradient(72.47deg, ${
+        theme.direction === 'ltr' ? theme.palette.primary.main : hexToRGBA(theme.palette.primary.main, 0.7)
+      } 22.16%, ${
+        theme.direction === 'ltr' ? hexToRGBA(theme.palette.primary.main, 0.7) : theme.palette.primary.main
+      } 76.47%)`,
       '&.Mui-focusVisible': {
         background: `linear-gradient(72.47deg, ${theme.palette.primary.dark} 22.16%, ${hexToRGBA(
           theme.palette.primary.dark,
@@ -129,12 +131,8 @@ const VerticalNavLink = ({ item, parent, navHover, settings, navVisible, isSubTo
 
   return (
     <CanViewNavLink navLink={item}>
-      <Tooltip title={item.title == 'Growseb AI' ? 'Score Card' : item.title} placement='right'>
-        <ListItem
-          disablePadding
-          className='nav-link'
-          sx={{ mt: 1, px: '0 !important' }}
-        >
+      <Tooltip title={item.title == 'Growseb AIe' ? 'Score Card' : item.title} placement='right'>
+        <ListItem disablePadding className='nav-link' sx={{ mt: 1, px: '0 !important' }}>
           <MenuNavLink
             component={Link}
             {...(item.disabled && { tabIndex: -1, disabled: true })} // Set disabled here
@@ -143,11 +141,11 @@ const VerticalNavLink = ({ item, parent, navHover, settings, navVisible, isSubTo
             {...(item.openInNewTab ? { target: '_blank' } : null)}
             onClick={e => {
               if (item.path === undefined) {
-                e.preventDefault();
-                e.stopPropagation();
+                e.preventDefault()
+                e.stopPropagation()
               }
               if (navVisible) {
-                toggleNavVisibility();
+                toggleNavVisibility()
               }
             }}
           >
@@ -190,7 +188,6 @@ const VerticalNavLink = ({ item, parent, navHover, settings, navVisible, isSubTo
             </MenuItemTextMetaWrapper>
           </MenuNavLink>
         </ListItem>
-
       </Tooltip>
     </CanViewNavLink>
   )

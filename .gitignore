@@ -46,3 +46,5 @@ node_modules
 **/public/workbox-*.js.map
 **/public/worker-*.js.map
 .vercel
+
+.vercel

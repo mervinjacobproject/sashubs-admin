@@ -106,7 +106,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const handleLogout = () => {
     setUser(null)
-    window.localStorage.removeItem('userData')
+    window.localStorage.clear()
     window.localStorage.removeItem(authConfig.storageTokenKeyName)
     router.push('/login')
   }

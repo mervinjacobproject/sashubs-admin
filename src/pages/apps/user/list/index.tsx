@@ -7,21 +7,15 @@ import { GetStaticProps, InferGetStaticPropsType } from 'next/types'
 
 // ** MUI Imports
 
-
 import Grid from '@mui/material/Grid'
 
-
-
 // ** Icon Imports
-
-
 
 // ** Store Imports
 
 import { useDispatch } from 'react-redux'
 
 // ** Custom Components Imports
-
 
 import CardStatsHorizontalWithDetails from 'src/@core/components/card-statistics/card-stats-horizontal-with-details'
 
@@ -34,10 +28,10 @@ import { fetchData } from 'src/store/apps/user'
 import axios from 'axios'
 
 // ** Types Imports
-import {  AppDispatch } from 'src/store'
+import { AppDispatch } from 'src/store'
 import { CardStatsType } from 'src/@fake-db/types'
 import { CardStatsHorizontalWithDetailsProps } from 'src/@core/components/card-statistics/types'
-import CrmDashboard from 'src/pages/dashboards/crm'
+// import CrmDashboard from 'src/pages/dashboards/crm'
 
 // interface UserRoleType {
 //   [key: string]: { icon: string; color: string }
@@ -269,7 +263,7 @@ const UserList = ({ apiData }: InferGetStaticPropsType<typeof getStaticProps>) =
   // ** Hooks
 
   const dispatch = useDispatch<AppDispatch>()
-  
+
   // const store = useSelector((state: RootState) => state.user)
 
   // useEffect(() => {
@@ -282,9 +276,6 @@ const UserList = ({ apiData }: InferGetStaticPropsType<typeof getStaticProps>) =
   //     })
   //   )
   // }, [dispatch, plan, role, status, value])
-
-
- 
 
   // const handleFilter = useCallback((val: string) => {
   //   setValue(val)
@@ -304,24 +295,21 @@ const UserList = ({ apiData }: InferGetStaticPropsType<typeof getStaticProps>) =
 
   // const toggleAddUserDrawer = () => setAddUserOpen(!addUserOpen)
 
-
-
   // const [designation, setDesignation] = useState([])
   // console.log(designation[0]?.customer_count,"designation")
 
   // const fetchData = () => {
   //   ApiClient.get('/api.php?moduletype=dashboard')
   //     .then((res: any) => {
-      
+
   //       setDesignation(res.data)
-       
+
   //     })
   //     .catch((err: any) => {
   //       console.error('Error fetching data:', err)
   //     })
   // }
 
-  
   // useEffect(() => {
   //   fetchData()
   // }, [])
@@ -329,11 +317,11 @@ const UserList = ({ apiData }: InferGetStaticPropsType<typeof getStaticProps>) =
   return (
     <Grid container spacing={6.5}>
       <Grid item xs={12}>
-      <Grid item xs={12} md={3} sm={6}>
-                  {/* <CardStatsHorizontalWithDetails  /> */}
-                </Grid>
+        <Grid item xs={12} md={3} sm={6}>
+          {/* <CardStatsHorizontalWithDetails  /> */}
+        </Grid>
       </Grid>
-      <CrmDashboard/>
+      {/* <CrmDashboard /> */}
 
       {/* <Grid item xs={12}>
         <Card>
@@ -412,7 +400,6 @@ const UserList = ({ apiData }: InferGetStaticPropsType<typeof getStaticProps>) =
       </Grid>
 
       <AddUserDrawer open={addUserOpen} toggle={toggleAddUserDrawer} /> */}
-
     </Grid>
   )
 }

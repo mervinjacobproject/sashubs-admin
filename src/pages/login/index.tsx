@@ -92,13 +92,13 @@ const LoginPage = () => {
   }, [])
 
   const handleSuccess = async (response: any, username: any, CustomerDetails: any) => {
-    const userData: any = JSON.stringify(CustomerDetails)
-    localStorage.setItem('userData', userData)
-    const { user, token }: any = response.data
-    if (token) {
+    const userData1: any = JSON.stringify(CustomerDetails)
+    localStorage.setItem('userData', userData1)
+    const { userData, accessToken }: any = response.data
+    if (accessToken) {
       localStorage.setItem('adminLoginEmail', username)
-      localStorage.setItem('adminLoginId', user?.UserId)
-      localStorage.setItem('accessToken', token)
+      localStorage.setItem('adminLoginId', userData?.UserId)
+      localStorage.setItem('accessToken', accessToken)
       toast.success('Login Success')
       router.push('/dashboards')
       setTimeout(() => {
@@ -119,31 +119,14 @@ const LoginPage = () => {
     setLoading(true)
     const { username, password } = data
     const requestData: any = {
-      Email: username,
-      Password: password
+      email: username,
+      password: password
     }
     try {
-      // const encryptedPassword = encodeURIComponent(encrypt(password, SecretKey))
-      // const response: any = await axios.get(
-      //   `/api/Cognito?operation=cognito_signin_admin&email=${username}&password=${encryptedPassword}  `
-      // )
-      // if (response.status == 200) {
-      //   const userResponse = await ApiLoginClient.post(`${PhpBaseUrl}getCustomer?email=${username}`)
-      //   if (userResponse.status == 200) {
-      //     handleSuccess(response, username, userResponse?.data)
-      //   } else if (userResponse.status == 201) {
-      //     toast.error(userResponse.data.status)
-      //   }
-      // } else if (response.status == 201) {
-      //   toast.error(response.data.status)
-      // }
-      const endpoint = 'api/userlogin'
+      const endpoint = 'api/auth/login'
       const response = await ApiLoginClient.post(endpoint, requestData)
       console.log(response)
       if (response) {
-        // const currentUrl = window.location.href
-        // const updatedUrl = currentUrl.split('?')[0]
-        // window.history.replaceState({}, document.title, updatedUrl)
         handleSuccess(response, username, response?.data)
       }
     } catch (error) {

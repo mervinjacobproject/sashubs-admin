@@ -16,11 +16,11 @@ import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
 import StepperWrapper from 'src/@core/styles/mui/stepper'
 import { Grid } from '@mui/material'
 import toast from 'react-hot-toast'
-import { closeRightPopupClick } from 'src/pages/components/ReusableComponents/rightDrawer/rightDrawer'
-import InvoiceCreateStepercard,{ JobstepercardInfoMethods } from './invoicestepercard'
-import InvoiceCreateTask ,{ JobtaskInfoMethods }from './invoicetask'
-import InvoiceAdditionalCharges,{ JobAdditonalInfoMethods } from './invoiceadditionalcharge'
-import InvoiceWorkDetails,{ JobworkerInfoMethods } from './invoiceworkdetails'
+import { closeRightPopupClick } from 'src/pages/components/ReusableComponents/rightDrawer/rightDrawer1'
+import InvoiceCreateStepercard, { JobstepercardInfoMethods } from './invoicestepercard'
+import InvoiceCreateTask, { JobtaskInfoMethods } from './invoicetask'
+import InvoiceAdditionalCharges, { JobAdditonalInfoMethods } from './invoiceadditionalcharge'
+import InvoiceWorkDetails, { JobworkerInfoMethods } from './invoiceworkdetails'
 import { useRouter } from 'next/router'
 
 const steps = [
@@ -92,8 +92,8 @@ const Step = styled(MuiStep)<StepProps>(({ theme }) => ({
   }
 }))
 
-const InvoiceSteperForm = ({JobIds,customer,separateId }: any) => {
-const router=useRouter()
+const InvoiceSteperForm = ({ JobIds, customer, separateId }: any) => {
+  const router = useRouter()
   const theme = useTheme()
   const [currentEditId, setCurrentEditId] = useState<number>(0)
   const [activeStep, setActiveStep] = useState<number>(0)
@@ -105,7 +105,7 @@ const router=useRouter()
   const handleNext = () => {
     setActiveStep(activeStep + 1)
   }
-  
+
   const handlePrev = () => {
     if (activeStep !== 0) {
       setActiveStep(activeStep - 1)
@@ -113,45 +113,44 @@ const router=useRouter()
   }
 
   const ResetEditIdFun = () => {
-    const currentUrl = window.location.href;
-    setCurrentEditId(0);
+    const currentUrl = window.location.href
+    setCurrentEditId(0)
     if (currentUrl.includes('invoiceid=new')) {
-      return;
+      return
     }
-    const newUrl = currentUrl.replace(/invoiceid(?:=\d+)?(?:%2C\d+)*&?/, 'invoiceid=new');
-    window.history.pushState({}, '', newUrl);
-  };
+    const newUrl = currentUrl.replace(/invoiceid(?:=\d+)?(?:%2C\d+)*&?/, 'invoiceid=new')
+    window.history.pushState({}, '', newUrl)
+  }
 
   const reset = () => {
     if (JobIds === 'new') {
-      setCurrentEditId(0);
+      setCurrentEditId(0)
     } else {
-      setCurrentEditId(JobIds);
+      setCurrentEditId(JobIds)
     }
-  };
-  useEffect(() => {
-    const currentUrl = window.location.href;
-    const queryParams = new URLSearchParams(window.location.search);
-  
-
-    if (router.pathname !=='/transactions/createInvoice'){
-    queryParams.set('id', customer); 
-    queryParams.set('invoiceid', separateId);
-    queryParams.set('createInvoiceId', JobIds); 
-    reset();
   }
-    
-    const newUrl = `${currentUrl.split('?')[0]}?${queryParams.toString()}`;
-    window.history.pushState({}, '', newUrl);
-  
+  useEffect(() => {
+    const currentUrl = window.location.href
+    const queryParams = new URLSearchParams(window.location.search)
+
+    if (router.pathname !== '/transactions/createInvoice') {
+      queryParams.set('id', customer)
+      queryParams.set('invoiceid', separateId)
+      queryParams.set('createInvoiceId', JobIds)
+      reset()
+    }
+
+    const newUrl = `${currentUrl.split('?')[0]}?${queryParams.toString()}`
+    window.history.pushState({}, '', newUrl)
+
     return () => {
-      if (router.pathname !=='/transactions/createInvoice'){
-      ResetEditIdFun();
+      if (router.pathname !== '/transactions/createInvoice') {
+        ResetEditIdFun()
       }
-    };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window.location.href, customer, JobIds, separateId]);
-  
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.location.href, customer, JobIds, separateId])
+
   const callChildMethod = async () => {
     if (activeStep == 0) {
       const isValid = await personalInfoRef?.current?.triggerValidation()
@@ -176,10 +175,11 @@ const router=useRouter()
       }
       if (isValid) {
         toast.success('Submitted Successfully..!!')
-    router.pathname === '/transactions/createInvoice' ? router.push('/transactions/invoice') :
-        closeRightPopupClick()
+        router.pathname === '/transactions/createInvoice'
+          ? router.push('/transactions/invoice')
+          : closeRightPopupClick()
       }
-    } 
+    }
   }
 
   const setEditId = (createdId: any) => {
@@ -189,23 +189,55 @@ const router=useRouter()
   useEffect(() => {
     if (router.pathname !== '/transactions/createInvoice') {
       if (JobIds !== null && JobIds !== 0 && JobIds !== undefined) {
-        setEditId(JobIds);
+        setEditId(JobIds)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  
+  }, [])
 
   const getStepContent = (step: number) => {
     switch (step) {
       case 0:
-        return <InvoiceCreateStepercard  handleNext={handleNext} customer={customer} editId={JobIds} separateId={separateId} setEditId={setEditId} ref={personalInfoRef} />
+        return (
+          <InvoiceCreateStepercard
+            handleNext={handleNext}
+            customer={customer}
+            editId={JobIds}
+            separateId={separateId}
+            setEditId={setEditId}
+            ref={personalInfoRef}
+          />
+        )
       case 1:
-        return <InvoiceCreateTask handleNext={handleNext} customer={customer} editId={JobIds} separateId={separateId}  ref={TaskRef} />
+        return (
+          <InvoiceCreateTask
+            handleNext={handleNext}
+            customer={customer}
+            editId={JobIds}
+            separateId={separateId}
+            ref={TaskRef}
+          />
+        )
       case 2:
-        return <InvoiceAdditionalCharges handleNext={handleNext} customer={customer} editId={JobIds} separateId={separateId} ref={JobAdditionalRef} />
+        return (
+          <InvoiceAdditionalCharges
+            handleNext={handleNext}
+            customer={customer}
+            editId={JobIds}
+            separateId={separateId}
+            ref={JobAdditionalRef}
+          />
+        )
       case 3:
-        return <InvoiceWorkDetails handleNext={handleNext} customer={customer} editId={JobIds} separateId={separateId} ref={WorkerInfoRef} />
+        return (
+          <InvoiceWorkDetails
+            handleNext={handleNext}
+            customer={customer}
+            editId={JobIds}
+            separateId={separateId}
+            ref={WorkerInfoRef}
+          />
+        )
       default:
         return null
     }
@@ -249,7 +281,7 @@ const router=useRouter()
           }}
           variant='contained'
           color={stepCondition ? 'success' : 'primary'}
-           onClick={handleSaveAndFinish}
+          onClick={handleSaveAndFinish}
         >
           {stepCondition ? 'Save & Finish' : 'Save & Next'}
           <Icon
@@ -269,11 +301,11 @@ const router=useRouter()
   const backColor = () => {
     const selectedMode = localStorage.getItem('selectedMode')
     if (selectedMode === 'dark') {
-      return 'rgba(208, 212, 241, 0.78)';
+      return 'rgba(208, 212, 241, 0.78)'
     } else if (selectedMode === 'light') {
       return '#fff'
     } else if (localStorage.getItem('systemMode') === 'dark') {
-      return 'rgba(208, 212, 241, 0.78)' 
+      return 'rgba(208, 212, 241, 0.78)'
     } else {
       return '#fff'
     }
@@ -289,13 +321,13 @@ const router=useRouter()
           fontWeight: 600,
           fontFamily: 'sans-serif',
           padding: '10px',
-          color:'black'
+          color: 'black'
         }}
       >
         Invoice Details
       </Typography>
-      <Card  sx={{ display: 'flex',width:"100%"}}>
-        <Grid item xs={3} >
+      <Card sx={{ display: 'flex', width: '100%' }}>
+        <Grid item xs={3}>
           <StepperHeaderContainer>
             <StepperWrapper sx={{ height: '100%' }}>
               <Stepper
@@ -343,7 +375,7 @@ const router=useRouter()
             </StepperWrapper>
           </StepperHeaderContainer>
         </Grid>
-        <Grid item xs={9} sx={{width:"100%"}}>
+        <Grid item xs={9} sx={{ width: '100%' }}>
           <CardContent sx={{ pt: theme => `${theme.spacing(6)} !important` }}>
             {renderContent()}
             {renderFooter()}

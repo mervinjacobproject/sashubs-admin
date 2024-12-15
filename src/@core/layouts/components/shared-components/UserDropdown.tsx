@@ -87,87 +87,12 @@ const UserDropdown = (props: Props) => {
   const userProfileState = useSelector(selectUserProfile)
   const loginId = localStorage.getItem('adminLoginId')
   const [datasets, setDatasets] = useState<any>([])
-  // const login = async () => {
-  //   // const res = await ApiLoginClient.post(`/getadmin?Id=${loginId}`)
-  //   const response = res.data.data
-  //   setDatasets(response)
-  // }
 
   const profileImageUrl = userData ? userData?.image || 'defaultImageUrl' : 'defaultImageUrl'
   const adminFirstname = userData ? userData?.firstname : 'admin'
   const adminLastname = userData ? userData?.lastname : 'admin'
   const adminUserId = userProfileState?.data?.[0]?.UserId
   const userType = localStorage.getItem('adminLoginType')
-  const handleUserId = () => {
-    const query = `
-      query MyQuery {
-        listDriver5AABS(filter: {DID: {eq:${adminUserId}}}) {
-          items {
-            Address1
-            Address2
-            AppAccess
-            Country
-            DID
-            DOB
-            DOJ
-            DOT
-            Date
-            Deleted
-            Designation
-            DocumentExpiryDate
-            DocumentName
-            DriverID
-            Email
-            EmpGroup
-            FirstName
-            IP
-            InsertedBy
-            LandLine
-            LastName
-            License
-            LicenseNo
-            Mobile
-            Password
-            Photo
-            PostCode
-            SalaryDocuments
-            SalaryFrequency
-            SalaryFromKM
-            SalaryPerHour
-            SalaryPerSQM
-            SalaryPerWeight
-            State
-            SubURB
-            Status
-            Title
-            UpdatedAt
-            UpdatedBy
-            UserName
-          }
-        }
-      }`
-
-    const headers = {
-      'x-api-key': 'da2-jowogob3crfi3fnfp4artz6syq',
-      'Content-Type': 'application/json'
-    }
-    ApiClient.post(`${AppSink}`, { query }, { headers })
-      .then(res => {
-        const UserDetails = res.data.data.listDriver5AABS.items[0]
-        setUserDetails(UserDetails)
-      })
-      .catch(err => {
-        console.error('Error deleting :', err)
-      })
-  }
-
-  useEffect(() => {
-    // login()
-    {
-      userType === '0' && handleUserId()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [adminUserId])
 
   useEffect(() => {
     const roleId = userProfileState.data?.[0]?.RoleId
@@ -193,14 +118,17 @@ const UserDropdown = (props: Props) => {
           horizontal: 'right'
         }}
       >
-          {adminFirstname && !profileImageUrl ? (
-              <Avatar sx={{ width: 38, height: 38, fontSize: 28, borderRadius: '50%', backgroundColor: '#cacaca' }}>
-                {adminFirstname.charAt(0).toUpperCase()} {adminLastname.charAt(0).toUpperCase()}
-              </Avatar>
-            ) : (
-              <Avatar alt={adminFirstname} src={profileImageUrl} sx={{ width: '2.5rem', height: '2.5rem',objectFit:"contain" }} />
-            )}
-       
+        {adminFirstname && !profileImageUrl ? (
+          <Avatar sx={{ width: 38, height: 38, fontSize: 28, borderRadius: '50%', backgroundColor: '#cacaca' }}>
+            {adminFirstname.charAt(0).toUpperCase()} {adminLastname.charAt(0).toUpperCase()}
+          </Avatar>
+        ) : (
+          <Avatar
+            alt={adminFirstname}
+            src={profileImageUrl}
+            sx={{ width: '2.5rem', height: '2.5rem', objectFit: 'contain' }}
+          />
+        )}
       </Badge>
       <Menu
         anchorEl={anchorEl}
@@ -218,7 +146,11 @@ const UserDropdown = (props: Props) => {
                 {adminFirstname.charAt(0).toUpperCase()} {adminLastname.charAt(0).toUpperCase()}
               </Avatar>
             ) : (
-              <Avatar alt={adminFirstname} src={profileImageUrl} sx={{ width: '2.5rem', height: '2.5rem',objectFit:"contain !important"  }} />
+              <Avatar
+                alt={adminFirstname}
+                src={profileImageUrl}
+                sx={{ width: '2.5rem', height: '2.5rem', objectFit: 'contain !important' }}
+              />
             )}
             <Box sx={{ display: 'flex', ml: 2.5, alignItems: 'flex-start', flexDirection: 'column' }}>
               {/* <Typography sx={{ fontWeight: 500 }}>{adminFirstname.charAt(0).toUpperCase(0)}</Typography> */}
