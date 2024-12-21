@@ -8,11 +8,11 @@ import Icon from 'src/@core/components/icon'
 import { IconButton } from '@mui/material'
 import Button from '@mui/material/Button'
 import DrawerComponent from 'src/pages/components/ReusableComponents/rightDrawer/rightDrawer1'
-import ParentForm from './parentform'
+import RoleForm from './roleform'
 
 const ParentTypeHeader = (props: any) => {
   // ** Props
-  const { applyFilters, editId, resetFilters, fetchData } = props
+  const { applyFilters, resetFilters, fetchData } = props
   const [activeStatus, setActiveStatus] = useState<any>(2)
   const [showMessage, setShowMessage] = useState(false)
   const [ParentCategory, setParentCategory] = useState('')
@@ -71,7 +71,7 @@ const ParentTypeHeader = (props: any) => {
           </Grid>
           <Grid sx={{ display: 'flex', alignItems: 'center' }}>
             <DrawerComponent width='530px' anchor='right' onOpen={handleOpenDrawer} buttonLabel='Add New'>
-              <ParentForm fetchData={fetchData} resetEditid={resetEditid} />
+              <RoleForm fetchData={fetchData} resetEditid={resetEditid} />
             </DrawerComponent>
           </Grid>
         </Box>
@@ -98,12 +98,10 @@ const ParentTypeHeader = (props: any) => {
               </Grid>
 
               <Grid>
-                <label style={{ marginRight: '10px', marginTop: '10px', marginLeft: '5px' }}>
-                  Parent Category Name
-                </label>
+                <label style={{ marginRight: '10px', marginTop: '10px', marginLeft: '5px' }}>Role Name</label>
                 <br></br>
                 <CustomTextField
-                  placeholder=' Parent Category Name'
+                  placeholder='Role Name'
                   sx={{ marginBottom: '15px', height: '40px' }}
                   value={ParentCategory}
                   onChange={e => {

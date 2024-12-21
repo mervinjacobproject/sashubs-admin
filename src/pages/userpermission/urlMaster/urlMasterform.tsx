@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Box, Button, CircularProgress, Grid, Switch, Typography } from '@mui/material'
+import { Autocomplete, Box, Button, CircularProgress, Grid, Switch, Typography } from '@mui/material'
 import Icon from 'src/@core/components/icon'
 import CustomTextField from 'src/@core/components/mui/text-field'
 import toast from 'react-hot-toast'
@@ -8,49 +8,58 @@ import { closeRightPopupClick } from 'src/pages/components/ReusableComponents/ri
 import ApiLoginClient from 'src/apiClient/apiClient/loginConfig'
 
 interface FormData {
-  Category: string
+  MasterName: string
+  Url: string
+  Icon: string
   Status: boolean
+  Childof: any
   DisplayOrder: any
 }
-interface FileProp {
-  name: string
-  type: string
-  size: number
-}
-const ParentForm = ({ rowData, onClose, fetchData }: any) => {
-  const [loader, setloder] = useState(false)
 
+const ParentForm = ({ rowData, onClose, fetchData, chargeList }: any) => {
+  const [loader, setloder] = useState(false)
+  const [ChildId, setChildId] = useState(0)
   const {
     handleSubmit,
     control,
     setValue,
+    watch,
     formState: { errors }
   } = useForm<FormData>({
     defaultValues: {
-      Category: '',
+      MasterName: '',
+      Icon: '',
+      Url: '',
       Status: true,
-      DisplayOrder: ''
+      DisplayOrder: '',
+      Childof: 0
     }
   })
 
   useEffect(() => {
     setloder(true)
     const mappedStatus: any = rowData?.row?.Status == true ? 1 : 0
-    setValue('Category', rowData?.row.Category)
+    setValue('MasterName', rowData?.row.MasterName)
     setValue('Status', mappedStatus)
     setValue('DisplayOrder', rowData?.row.DisplayOrder)
+    setValue('Icon', rowData?.row.Icon)
+    setValue('Url', rowData?.row.Url)
+    setValue('Childof', rowData?.row?.Childof)
     setloder(false)
   }, [rowData, setValue])
 
   const onSubmit = async (data: any) => {
     let payload: any = {
       Status: data.Status ? true : false,
-      Category: data.Category.charAt(0).toUpperCase() + data.Category.slice(1),
-      DisplayOrder: Number(data.DisplayOrder)
+      MasterName: data.MasterName.charAt(0).toUpperCase() + data.MasterName.slice(1),
+      DisplayOrder: Number(data.DisplayOrder),
+      Icon: data.Icon,
+      Url: data.Url,
+      Childof: ChildId
     }
-    if (rowData?.row.CId) {
-      const endpoint = 'api/categories/updateparentcategory'
-      payload = { ...payload, CId: rowData?.row.CId }
+    if (rowData?.row.Id) {
+      const endpoint = 'api/userspermission/updateurlmaster'
+      payload = { ...payload, Id: rowData?.row.Id }
       ApiLoginClient.put(endpoint, payload)
         .then((res: any) => {
           toast.success(res?.data?.message)
@@ -61,7 +70,7 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
           console.log(err.message)
         })
     } else {
-      const endpoint = 'api/categories/createparentcategory'
+      const endpoint = 'api/userspermission/createurlmaster'
       ApiLoginClient.post(endpoint, payload)
         .then(res => {
           toast.success(res?.data?.message)
@@ -88,9 +97,9 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
           >
             <Grid item xs={12} sm={12}>
               <Controller
-                name='Category'
+                name='MasterName'
                 control={control}
-                rules={{ required: 'Parent Category is required' }}
+                rules={{ required: 'Parent MasterName is required' }}
                 render={({ field: { value, onChange } }) => (
                   <>
                     <CustomTextField
@@ -104,14 +113,14 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
                               fontSize: '14px'
                             }}
                           >
-                            Parent Category Category
+                            MasterName
                           </span>
                           <Typography variant='caption' color='error' sx={{ fontSize: '17px', marginLeft: '2px' }}>
                             *
                           </Typography>
                         </div>
                       }
-                      placeholder='Enter your Parent Category Category'
+                      placeholder='Enter your MasterName '
                       onChange={e => {
                         const inputValue = e.target.value
                         if (/^[&A-Za-z0-9_-\s]*$/.test(inputValue) || inputValue === '') {
@@ -119,16 +128,151 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
                         }
                       }}
                     />
-                    {errors.Category && (
+                    {errors.MasterName && (
                       <Typography variant='caption' color='error'>
-                        {errors.Category.message as any}
+                        {errors.MasterName.message as any}
                       </Typography>
                     )}
                   </>
                 )}
               />
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={12} mt={2}>
+              <Controller
+                name='Childof'
+                control={control}
+                // rules={{ required: 'Parent Master is required' }}
+                render={({ field }) => (
+                  <>
+                    <Autocomplete
+                      {...field}
+                      sx={{
+                        '.css-8yodjg-MuiInputBase-input-MuiOutlinedInput-input': {
+                          padding: '13.5px 10px !important'
+                        }
+                      }}
+                      options={chargeList}
+                      getOptionLabel={(option: any) => option.MasterName || watch('Childof')}
+                      isOptionEqualToValue={(option: any, value: any) => option.chargeList == value}
+                      value={chargeList?.find((c: any) => c.Id == field.value) || watch('Childof')}
+                      renderInput={(params: any) => (
+                        <CustomTextField
+                          {...params}
+                          label={
+                            <>
+                              <span
+                                className='lastname'
+                                style={{
+                                  fontSize: '14px'
+                                }}
+                              >
+                                Parent Master
+                              </span>
+                              <Typography variant='caption' color='error' sx={{ fontSize: '17px', marginLeft: '2px' }}>
+                                *
+                              </Typography>
+                            </>
+                          }
+                          // error={Boolean(errors.CId)}
+                          // helperText={errors.CId?.message}
+                        />
+                      )}
+                      onChange={(_event, value: any) => {
+                        field.onChange(value ? value.Id : 0)
+                        setChildId(value ? value.Id : 0)
+                      }}
+                    />
+                    {/* {errors.Childof && (
+                      <Typography variant='caption' color='error'>
+                        {errors.Childof.message as any}
+                      </Typography>
+                    )} */}
+                  </>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} mt={2}>
+              <Controller
+                name='Icon'
+                control={control}
+                // rules={{ required: 'Icon is required' }}
+                render={({ field: { value, onChange } }) => (
+                  <>
+                    <CustomTextField
+                      fullWidth
+                      value={value}
+                      label={
+                        <div>
+                          <span
+                            className='lastname'
+                            style={{
+                              fontSize: '14px'
+                            }}
+                          >
+                            ICON
+                          </span>
+                          <Typography variant='caption' color='error' sx={{ fontSize: '17px', marginLeft: '2px' }}>
+                            *
+                          </Typography>
+                        </div>
+                      }
+                      placeholder='Enter your Icon '
+                      onChange={e => {
+                        const inputValue = e.target.value
+                        if (/^[&A-Za-z0-9_-\s]*$/.test(inputValue) || inputValue === '' || true) {
+                          onChange(e)
+                        }
+                      }}
+                    />
+                    {/* {errors.Icon && (
+                      <Typography variant='caption' color='error'>
+                        {errors.Icon.message as any}
+                      </Typography>
+                    )} */}
+                  </>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12} mt={2}>
+              <Controller
+                name='Url'
+                control={control}
+                // rules={{ required: 'Url is required' }}
+                render={({ field: { value, onChange } }) => (
+                  <>
+                    <CustomTextField
+                      fullWidth
+                      value={value}
+                      label={
+                        <div>
+                          <span
+                            className='lastname'
+                            style={{
+                              fontSize: '14px'
+                            }}
+                          >
+                            URL
+                          </span>
+                        </div>
+                      }
+                      placeholder='Enter your Url '
+                      onChange={e => {
+                        const inputValue = e.target.value
+                        if (/^[&A-Za-z0-9_-\s]*$/.test(inputValue) || inputValue === '' || true) {
+                          onChange(e)
+                        }
+                      }}
+                    />
+                    {/* {errors.Url && (
+                      <Typography variant='caption' color='error'>
+                        {errors.Url.message as any}
+                      </Typography>
+                    )} */}
+                  </>
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4} mt={2}>
               <div className='empTextField'>
                 <Controller
                   name='DisplayOrder'
@@ -171,6 +315,7 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
                 />
               </div>
             </Grid>
+
             <Grid item xs={12} sm={12} sx={{ display: 'flex', justifyContent: 'start', alignItems: '' }}>
               <div className='empTextField' style={{ display: 'Grid', alignItems: 'center' }}>
                 <Typography

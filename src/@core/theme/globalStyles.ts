@@ -1,5 +1,6 @@
 // ** MUI Imports
 import { Theme } from '@mui/material/styles'
+import { OwnerStateThemeType } from './overrides'
 
 const GlobalStyles = (theme: Theme) => {
   return {
@@ -54,6 +55,12 @@ const GlobalStyles = (theme: Theme) => {
         position: 'fixed',
         backgroundColor: theme.palette.primary.main
       }
+    },
+    '.css-2zcu39-MuiSwitch-root .MuiSwitch-track': {
+      backgroundColor: '#b9b6bd !important'
+    },
+    '.css-10rrxwv-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track': {
+      backgroundColor: '#776cff !important'
     }
   }
 }

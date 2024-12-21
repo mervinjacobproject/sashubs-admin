@@ -8,7 +8,7 @@ import { closeRightPopupClick } from 'src/pages/components/ReusableComponents/ri
 import ApiLoginClient from 'src/apiClient/apiClient/loginConfig'
 
 interface FormData {
-  Category: string
+  RoleName: string
   Status: boolean
   DisplayOrder: any
 }
@@ -27,7 +27,7 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
     formState: { errors }
   } = useForm<FormData>({
     defaultValues: {
-      Category: '',
+      RoleName: '',
       Status: true,
       DisplayOrder: ''
     }
@@ -36,7 +36,7 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
   useEffect(() => {
     setloder(true)
     const mappedStatus: any = rowData?.row?.Status == true ? 1 : 0
-    setValue('Category', rowData?.row.Category)
+    setValue('RoleName', rowData?.row.RoleName)
     setValue('Status', mappedStatus)
     setValue('DisplayOrder', rowData?.row.DisplayOrder)
     setloder(false)
@@ -45,12 +45,12 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
   const onSubmit = async (data: any) => {
     let payload: any = {
       Status: data.Status ? true : false,
-      Category: data.Category.charAt(0).toUpperCase() + data.Category.slice(1),
+      RoleName: data.RoleName.charAt(0).toUpperCase() + data.RoleName.slice(1),
       DisplayOrder: Number(data.DisplayOrder)
     }
-    if (rowData?.row.CId) {
-      const endpoint = 'api/categories/updateparentcategory'
-      payload = { ...payload, CId: rowData?.row.CId }
+    if (rowData?.row.Id) {
+      const endpoint = 'api/userspermission/updateuserroles'
+      payload = { ...payload, Id: rowData?.row.Id }
       ApiLoginClient.put(endpoint, payload)
         .then((res: any) => {
           toast.success(res?.data?.message)
@@ -61,7 +61,7 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
           console.log(err.message)
         })
     } else {
-      const endpoint = 'api/categories/createparentcategory'
+      const endpoint = 'api/userspermission/createuserroles'
       ApiLoginClient.post(endpoint, payload)
         .then(res => {
           toast.success(res?.data?.message)
@@ -88,9 +88,9 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
           >
             <Grid item xs={12} sm={12}>
               <Controller
-                name='Category'
+                name='RoleName'
                 control={control}
-                rules={{ required: 'Parent Category is required' }}
+                rules={{ required: 'Parent RoleName is required' }}
                 render={({ field: { value, onChange } }) => (
                   <>
                     <CustomTextField
@@ -104,14 +104,14 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
                               fontSize: '14px'
                             }}
                           >
-                            Parent Category Category
+                            RoleName
                           </span>
                           <Typography variant='caption' color='error' sx={{ fontSize: '17px', marginLeft: '2px' }}>
                             *
                           </Typography>
                         </div>
                       }
-                      placeholder='Enter your Parent Category Category'
+                      placeholder='Enter your RoleName '
                       onChange={e => {
                         const inputValue = e.target.value
                         if (/^[&A-Za-z0-9_-\s]*$/.test(inputValue) || inputValue === '') {
@@ -119,9 +119,9 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
                         }
                       }}
                     />
-                    {errors.Category && (
+                    {errors.RoleName && (
                       <Typography variant='caption' color='error'>
-                        {errors.Category.message as any}
+                        {errors.RoleName.message as any}
                       </Typography>
                     )}
                   </>
@@ -171,6 +171,7 @@ const ParentForm = ({ rowData, onClose, fetchData }: any) => {
                 />
               </div>
             </Grid>
+
             <Grid item xs={12} sm={12} sx={{ display: 'flex', justifyContent: 'start', alignItems: '' }}>
               <div className='empTextField' style={{ display: 'Grid', alignItems: 'center' }}>
                 <Typography

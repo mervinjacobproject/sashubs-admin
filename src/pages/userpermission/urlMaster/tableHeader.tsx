@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import MenuItem from '@mui/material/MenuItem'
@@ -8,14 +8,15 @@ import Icon from 'src/@core/components/icon'
 import { IconButton } from '@mui/material'
 import Button from '@mui/material/Button'
 import DrawerComponent from 'src/pages/components/ReusableComponents/rightDrawer/rightDrawer1'
-import ParentForm from './parentform'
+import UrlMasterform from './urlMasterform'
 
 const ParentTypeHeader = (props: any) => {
   // ** Props
-  const { applyFilters, editId, resetFilters, fetchData } = props
+  const { applyFilters, resetFilters, fetchData, chargeList } = props
   const [activeStatus, setActiveStatus] = useState<any>(2)
   const [showMessage, setShowMessage] = useState(false)
   const [ParentCategory, setParentCategory] = useState('')
+  const [ParentMaster, setParentMaster] = useState('')
 
   const resetAll = () => {
     setActiveStatus(2)
@@ -71,7 +72,7 @@ const ParentTypeHeader = (props: any) => {
           </Grid>
           <Grid sx={{ display: 'flex', alignItems: 'center' }}>
             <DrawerComponent width='530px' anchor='right' onOpen={handleOpenDrawer} buttonLabel='Add New'>
-              <ParentForm fetchData={fetchData} resetEditid={resetEditid} />
+              <UrlMasterform fetchData={fetchData} resetEditid={resetEditid} chargeList={chargeList} />
             </DrawerComponent>
           </Grid>
         </Box>
@@ -98,12 +99,10 @@ const ParentTypeHeader = (props: any) => {
               </Grid>
 
               <Grid>
-                <label style={{ marginRight: '10px', marginTop: '10px', marginLeft: '5px' }}>
-                  Parent Category Name
-                </label>
+                <label style={{ marginRight: '10px', marginTop: '10px', marginLeft: '5px' }}>MasterName</label>
                 <br></br>
                 <CustomTextField
-                  placeholder=' Parent Category Name'
+                  placeholder='MasterName'
                   sx={{ marginBottom: '15px', height: '40px' }}
                   value={ParentCategory}
                   onChange={e => {
@@ -111,10 +110,22 @@ const ParentTypeHeader = (props: any) => {
                   }}
                 />
               </Grid>
+              <Grid>
+                <label style={{ marginRight: '10px', marginTop: '10px', marginLeft: '5px' }}>Parenyt MasterName</label>
+                <br></br>
+                <CustomTextField
+                  placeholder='Parenyt Master Name'
+                  sx={{ marginBottom: '15px', height: '40px' }}
+                  value={ParentMaster}
+                  onChange={e => {
+                    setParentMaster(e.target.value)
+                  }}
+                />
+              </Grid>
             </div>
             <div style={{ display: 'flex', gap: '10px' }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Button onClick={() => applyFilters(activeStatus, ParentCategory)} variant='contained'>
+                <Button onClick={() => applyFilters(activeStatus, ParentCategory, ParentMaster)} variant='contained'>
                   <Icon fontSize='1.125rem' style={{ marginRight: '5px' }} icon='mingcute:filter-line' />
                   Filter
                 </Button>
@@ -123,6 +134,7 @@ const ParentTypeHeader = (props: any) => {
                 <Button
                   onClick={() => {
                     setParentCategory('')
+                    setParentMaster('')
                     resetAll()
                   }}
                   variant='contained'

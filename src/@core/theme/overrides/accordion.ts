@@ -43,7 +43,7 @@ const Accordion = () => {
           borderRadius: 'inherit',
           padding: `0 ${theme.spacing(4.5)}`,
           '& + .MuiCollapse-root': {
-            '& .MuiAccordionDetails-root:first-of-type': {
+            '& .MuiAccordionDetails-root:first-child': {
               paddingTop: 0
             }
           },
