@@ -16,7 +16,7 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
     } else if (skin === 'bordered' && mode === 'dark') {
       return darkPaperBgColor
     } else if (mode === 'light') {
-      return '#ffff'
+      return '#F8F7FA'
     } else return '#25293C'
   }
 
@@ -27,7 +27,7 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
       light: lightColor,
       lightPaperBg: whiteColor,
       darkPaperBg: darkPaperBgColor,
-      bodyBg: mode === 'light' ? '#ffff' : '#25293C',
+      bodyBg: mode === 'light' ? '#F8F7FA' : '#25293C',
       trackBg: mode === 'light' ? '#F1F0F2' : '#363B54',
       avatarBg: mode === 'light' ? '#DBDADE' : '#4A5072',
       tableHeaderBg: mode === 'light' ? '#F6F6F7' : '#4A5072'
@@ -57,7 +57,7 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
     },
     warning: {
       light: '#FFAB5A',
-      main: '#776cff',
+      main: '#FF9F43',
       dark: '#E08C3B',
       contrastText: whiteColor
     },
@@ -69,7 +69,7 @@ const DefaultPalette = (mode: Palette['mode'], skin: Skin): Palette => {
     },
     success: {
       light: '#42CE80',
-      main: '#776cff',
+      main: '#28C76F',
       dark: '#23AF62',
       contrastText: whiteColor
     },

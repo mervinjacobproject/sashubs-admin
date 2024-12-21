@@ -34,7 +34,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
 }) => {
   const [open, setOpen] = useState(initiallyOpen || false)
   const router = useRouter()
-
+  console.log(icon, 'haiiii')
 
   useEffect(() => {
     if (initiallyOpen) {
@@ -56,11 +56,11 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
 
   const handleClose = () => {
     if (updateParent) {
-
+      console.log('parent available')
       updateParent && updateParent()
       setOpen(false)
     } else {
-
+      console.log('No parent available')
       setOpen(false)
     }
   }
@@ -75,17 +75,17 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
           localStorage.getItem('selectedMode') === 'dark'
             ? 'transparent'
             : localStorage.getItem('selectedMode') === 'light'
-              ? '#fff'
-              : localStorage.getItem('systemMode') === 'dark'
-                ? 'transparent'
-                : '#fff'
+            ? '#fff'
+            : localStorage.getItem('systemMode') === 'dark'
+            ? 'transparent'
+            : '#fff'
       }}
       role='presentation'
       onClick={event => {
         event.stopPropagation()
       }}
 
-    //   onKeyDown={(event) => { event.stopPropagation();}}
+      //   onKeyDown={(event) => { event.stopPropagation();}}
     >
       <Button id='rightDrawerClose' onClick={handleClose}>
         <Icon fontSize='1.125rem' icon='material-symbols:close' color='black' />
@@ -150,8 +150,8 @@ export function closeRightPopupClick() {
   const button = document.getElementById('rightDrawerClose')
   if (button) {
     button.click() // Triggering the click event on the button
-
+    console.log('Button click event triggered.')
   } else {
-
+    console.log('Button with the specified ID not found.')
   }
 }

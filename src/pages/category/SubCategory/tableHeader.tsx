@@ -5,21 +5,57 @@ import MenuItem from '@mui/material/MenuItem'
 import CustomTextField from 'src/@core/components/mui/text-field'
 import Select from '@mui/material/Select'
 import Icon from 'src/@core/components/icon'
-import { IconButton } from '@mui/material'
+import { Autocomplete, IconButton } from '@mui/material'
 import Button from '@mui/material/Button'
-import DrawerComponent from 'src/pages/components/ReusableComponents/rightDrawer/rightDrawer1'
-import ParentForm from './parentform'
+import DrawerComponent from 'src/pages/components/ReusableComponents/rightDrawer/rightDrawer'
+import { Controller, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import SubForm from './subform'
 
-const ParentTypeHeader = (props: any) => {
+interface FormValues {
+  ParentCategory: any
+}
+const SubTypeHeader = (props: any) => {
   // ** Props
-  const { applyFilters, editId, resetFilters, fetchData } = props
+  const { applyFilters, resetFilters, fetchData, isWrite, ParentCategory } = props
   const [activeStatus, setActiveStatus] = useState<any>(2)
   const [showMessage, setShowMessage] = useState(false)
-  const [ParentCategory, setParentCategory] = useState('')
+  const [searchvehicle, setSearchvehicle] = useState('')
+  const [loading, setloading] = useState(false)
+  const [getcuid, setgetcuid] = useState('')
+
+  const defaultAccountValues: FormValues = {
+    ParentCategory: ''
+  }
+  const accountSchema = yup.object().shape({})
+  const {
+    control: accountControl,
+    formState: { errors: accountErrors },
+    handleSubmit,
+    setValue,
+    watch,
+    reset
+  } = useForm<FormValues>({
+    defaultValues: defaultAccountValues,
+
+    resolver: yupResolver(accountSchema)
+  })
+
+  const cleartext = () => {
+    reset({ ParentCategory: '' })
+  }
 
   const resetAll = () => {
-    setActiveStatus(2)
     resetFilters()
+    cleartext()
+    reset()
+    setActiveStatus(2)
+
+    setgetcuid('')
+    setTimeout(() => {
+      setloading(false)
+    }, 500)
   }
 
   const handleStatusChange = (event: any) => {
@@ -28,6 +64,7 @@ const ParentTypeHeader = (props: any) => {
 
   const resetEditid = () => {
     props.resetEditid()
+    resetFilters()
   }
 
   const handleOpenDrawer = () => {
@@ -71,7 +108,7 @@ const ParentTypeHeader = (props: any) => {
           </Grid>
           <Grid sx={{ display: 'flex', alignItems: 'center' }}>
             <DrawerComponent width='530px' anchor='right' onOpen={handleOpenDrawer} buttonLabel='Add New'>
-              <ParentForm fetchData={fetchData} resetEditid={resetEditid} />
+              <SubForm fetchData={fetchData} editStatus resetEditid={resetEditid} ParentCategory={ParentCategory} />
             </DrawerComponent>
           </Grid>
         </Box>
@@ -96,25 +133,65 @@ const ParentTypeHeader = (props: any) => {
                   <MenuItem value={0}>Inactive</MenuItem>
                 </Select>
               </Grid>
-
-              <Grid>
-                <label style={{ marginRight: '10px', marginTop: '10px', marginLeft: '5px' }}>
-                  Parent Category Name
+              <Grid sx={{ width: '200px' }}>
+                <label
+                  style={{
+                    marginRight: '10px',
+                    marginTop: '15px',
+                    marginLeft: '9px'
+                  }}
+                >
+                  {' '}
+                  Parent Category Filter{' '}
                 </label>
+
+                <Controller
+                  name='ParentCategory'
+                  control={accountControl}
+                  render={({ field }) => (
+                    <>
+                      <Autocomplete
+                        {...field}
+                        options={ParentCategory}
+                        getOptionLabel={(option: any) => option.Category || ''}
+                        value={
+                          ParentCategory?.find((pricevalue: any) => pricevalue?.Category == watch('ParentCategory')) ||
+                          null
+                        }
+                        onChange={(_, newValue) => {
+                          field.onChange(newValue?.Category || null)
+                          setgetcuid(newValue?.CId)
+                        }}
+                        isOptionEqualToValue={(option, value) => option?.CId === value?.CId}
+                        renderInput={params => (
+                          <CustomTextField
+                            {...params}
+                            inputProps={{
+                              ...params.inputProps
+                            }}
+                          />
+                        )}
+                      />
+                    </>
+                  )}
+                />
+              </Grid>
+              <Grid>
+                <label style={{ marginRight: '10px', marginTop: '10px', marginLeft: '5px' }}>Sub Category Name</label>
                 <br></br>
                 <CustomTextField
-                  placeholder=' Parent Category Name'
+                  placeholder='Sub Category Name'
                   sx={{ marginBottom: '15px', height: '40px' }}
-                  value={ParentCategory}
+                  value={searchvehicle}
                   onChange={e => {
-                    setParentCategory(e.target.value)
+                    setSearchvehicle(e.target.value)
                   }}
                 />
               </Grid>
             </div>
             <div style={{ display: 'flex', gap: '10px' }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Button onClick={() => applyFilters(activeStatus, ParentCategory)} variant='contained'>
+                <Button onClick={() => applyFilters(activeStatus, searchvehicle, getcuid)} variant='contained'>
                   <Icon fontSize='1.125rem' style={{ marginRight: '5px' }} icon='mingcute:filter-line' />
                   Filter
                 </Button>
@@ -122,7 +199,7 @@ const ParentTypeHeader = (props: any) => {
               <Box sx={{ display: 'flex', marginLeft: '5px', alignItems: 'center' }}>
                 <Button
                   onClick={() => {
-                    setParentCategory('')
+                    setSearchvehicle('')
                     resetAll()
                   }}
                   variant='contained'
@@ -138,4 +215,4 @@ const ParentTypeHeader = (props: any) => {
   )
 }
 
-export default ParentTypeHeader
+export default SubTypeHeader
